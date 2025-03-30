@@ -1,0 +1,27 @@
+plugins {
+    id 'java'
+}
+
+group = 'com.example'
+version = '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    // Directly vulnerable dependency: commons-email 1.1 (CVE-2017-9801)
+    implementation 'org.apache.commons:commons-email:1.1'
+
+    // Dependency with vulnerabilities in transitive dependencies: spring-core 4.3.13.RELEASE (CVE-2018-1275, CVE-2018-1270)
+    implementation 'org.springframework:spring-core:4.3.13.RELEASE'
+
+    // Another directly vulnerable dependency: jackson-databind 2.9.5 (Multiple CVEs including CVE-2018-12023, CVE-2018-1000873)
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.9.5'
+
+    // Dependency introducing a vulnerable transitive dependency: struts2-core 2.3.20 (CVE-2017-5638)
+    implementation 'org.apache.struts:struts2-core:2.3.20'
+
+    // Dependency with an older version to demonstrate deeper transitive vulnerabilities: commons-collections 3.2.1 (CVE-2015-7501)
+    implementation 'commons-collections:commons-collections:3.2.1'
+}

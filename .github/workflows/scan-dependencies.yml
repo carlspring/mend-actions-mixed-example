@@ -1,0 +1,70 @@
+name: Scan dependencies
+
+on:
+  pull_request:
+    branches:
+      - master
+  push:
+    branches:
+      - master
+  workflow_dispatch:
+
+env:
+  MEND_URL: ${{ secrets.MEND_URL }}
+#  MEND_ORGANIZATION: ${{ secrets.MEND_ORGANIZATION }}
+#  MEND_ORGANIZATION_KEY: ${{ secrets.MEND_ORGANIZATION_KEY }}
+  MEND_USER_KEY: ${{ secrets.MEND_USER_KEY }}
+  MEND_EMAIL: ${{ secrets.MEND_EMAIL }}
+  MEND_LOG_LEVEL: "DEBUG"
+
+permissions:
+  actions: write
+  contents: read
+  security-events: write
+
+jobs:
+  test-scan:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+          cache: 'yarn'
+
+      - name: Install dependencies with Yarn
+        run: yarn install --frozen-lockfile
+
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          cache: 'gradle'
+          distribution: 'temurin'
+          java-version: '21'
+
+      - name: Grant execute permission to Gradle wrapper
+        run: chmod +x gradlew
+
+      - name: Build with Gradle
+        run: ./gradlew build --no-daemon
+
+      - name: Set up Mend CLI
+        uses: carlspring/mend-actions/setup@v1
+
+      - name: Login into Mend.io
+        uses: carlspring/mend-actions/login@v1
+
+      - name: Scan dependencies
+        uses: carlspring/mend-actions/scan-dependencies@v1
+        with:
+          scope: "*//GitHub Actions Tests//${{ github.repository }}"
+
+      - name: Upload SARIF report
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: results.sarif
+
