@@ -62,6 +62,7 @@ jobs:
         uses: carlspring/mend-actions/scan-dependencies@feat/14/support-multiple-build-tools
         with:
           scope: "*//GitHub Actions Tests//${{ github.repository }}"
+          workflow_run: ${{ github.run_id }}
 
       - name: Upload dependencies.json
         uses: actions/upload-artifact@v4
@@ -74,6 +75,12 @@ jobs:
         with:
           name: results.sarif
           path: results.sarif
+
+      - name: Upload dependency graphs
+        uses: actions/upload-artifact@v4
+        with:
+          name: dependency-graphs
+          path: dependency-graphs
 
       - name: Upload SARIF report
         uses: github/codeql-action/upload-sarif@v3
