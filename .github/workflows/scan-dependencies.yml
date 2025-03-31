@@ -53,13 +53,13 @@ jobs:
         run: ./gradlew build --no-daemon
 
       - name: Set up Mend CLI
-        uses: carlspring/mend-actions/setup@v1
+        uses: carlspring/mend-actions/setup@feat/14/support-multiple-build-tools
 
       - name: Login into Mend.io
-        uses: carlspring/mend-actions/login@v1
+        uses: carlspring/mend-actions/login@feat/14/support-multiple-build-tools
 
       - name: Scan dependencies
-        uses: carlspring/mend-actions/scan-dependencies@v1
+        uses: carlspring/mend-actions/scan-dependencies@feat/14/support-multiple-build-tools
         with:
           scope: "*//GitHub Actions Tests//${{ github.repository }}"
 
