@@ -65,23 +65,23 @@ jobs:
           workflow_run: ${{ github.run_id }}
           display_dependency_graph_link: "false"
 
-      - name: Upload dependencies.json
-        uses: actions/upload-artifact@v4
-        with:
-          name: dependencies.json
-          path: dependencies.json
-
-      - name: Upload results.sarif
-        uses: actions/upload-artifact@v4
-        with:
-          name: results.sarif
-          path: results.sarif
-
-      - name: Upload dependency graphs
-        uses: actions/upload-artifact@v4
-        with:
-          name: dependency-graphs
-          path: dependency-graphs
+#      - name: Upload dependencies.json
+#        uses: actions/upload-artifact@v4
+#        with:
+#          name: dependencies.json
+#          path: dependencies.json
+#
+#      - name: Upload results.sarif
+#        uses: actions/upload-artifact@v4
+#        with:
+#          name: results.sarif
+#          path: results.sarif
+#
+#      - name: Upload dependency graphs
+#        uses: actions/upload-artifact@v4
+#        with:
+#          name: dependency-graphs
+#          path: dependency-graphs
 
       - name: Upload SARIF report
         uses: github/codeql-action/upload-sarif@v3
